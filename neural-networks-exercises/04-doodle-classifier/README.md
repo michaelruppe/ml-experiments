@@ -1,0 +1,7 @@
+Following along with the playlist on Coding Train:
+[Session 5 - Doodle Classifier - Intelligence and learning](
+https://www.youtube.com/playlist?list=PLRqwX-V7Uu6Zs14zKVuTuit6jApJgoYZQ)
+
+The (very large) datasets have been .gitignored! They are available at the [Google Quickdraw repo](https://github.com/googlecreativelab/quickdraw-dataset)
+
+[QuickDrawData](QuickDrawData) Is a Processing sketch that creates raw data files from the Quickdraw set (.npy files). It selects a smaller number of samples and creates a .bin file. The Quickdraw data has been gitignored and so this sketch will not work without first downloading an .npy file from [the Quickdraw data bucket](https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap)
