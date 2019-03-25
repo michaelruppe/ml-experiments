@@ -5,7 +5,7 @@ int sign(float n) {
 
 class Perceptron {
   float[] weights;
-  float learning_rate = 0.001;
+  float learning_rate = 0.0001;
 
   // Constructor - Initialise with random weights
   Perceptron(int n) {
