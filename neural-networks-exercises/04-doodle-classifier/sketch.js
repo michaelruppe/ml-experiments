@@ -2,17 +2,23 @@
   Classify whether a doodle is a cat, rainbow or train
   [784 pixels] -> NN -> [CAT, RAINBOW, TRAIN]
 
+
+  "Machine learning! It's a thing that sometimes, kind of almost maybe sort of
+   works, but is highly problematic for many important ethical and
+   social reasons." - Dan Shiffman
 */
+
+const NUM_TRAINING_CYCLES = 1;
+
 
 const len = 784;
 const total_data = 1000;
-const train_test_ratio = 0.8; // train with 80% of all data, test with remaining
 
 // this now defines the order of the output vector
 const CAT = 0;
 const RAINBOW = 1;
 const TRAIN = 2;
-
+const COW = 3;
 
 let cats_data;
 let trains_data;
@@ -26,6 +32,7 @@ let rainbows_training;
 let cats = {};
 let trains = {};
 let rainbows = {};
+let cows = {};
 let nn;
 
 
@@ -33,32 +40,13 @@ function preload() {
   cats_data = loadBytes("data/cat1000.bin");
   trains_data = loadBytes('data/locomotive1000.bin');
   rainbows_data = loadBytes('data/rainbow1000.bin');
+  // cows_data = loadBytes('data/cow1000.bin');
 
 }
-
-// Load test and training data into an object
-function prepareData(category, data, label){
-  category.training = [];
-  category.testing = [];
-
-  let threshold = floor(train_test_ratio * total_data);
-  for (let i = 0; i < total_data; i++){
-    if (i < threshold) {
-      let ofs = i * len;
-      category.training[i] = data.bytes.subarray(ofs, ofs + len); // grab one image worth of data from the raw data array
-      category.training[i].label = label;
-    }else {
-      let ofs = i * len;
-      category.testing[i - threshold] = data.bytes.subarray(ofs, ofs + len); // grab one image worth of data from the raw data array
-      category.testing[i - threshold].label = label;
-    }
-  }
-}
-
 
 function setup() {
   createCanvas(280, 280);
-  background(0);
+  background(255);
 
   // Prepare the data
   prepareData(cats, cats_data, CAT);
@@ -66,36 +54,63 @@ function setup() {
   prepareData(trains, trains_data, TRAIN);
 
   // Make the neural network
-  nn = new NeuralNetwork(len, 64, 3);
+  nn = new NeuralNetwork(len, 32, 3);
 
-  // randomise the training data
+  // collect the training and testing data
   let training = [];
   training = training.concat(cats.training);
   training = training.concat(rainbows.training);
   training = training.concat(trains.training);
-  shuffle(training, true); // true overrites input array
+  let testing = [];
+  testing = testing.concat(cats.testing);
+  testing = testing.concat(rainbows.testing);
+  testing = testing.concat(trains.testing);
 
-  // train for one epoch
-  for (let i = 0; i < training.length; i++ ) {
-    // create normalised input array
-    let data = training[i];
+  let epochCounter = 0;
+  let trainButton = select('#train');
+  trainButton.mousePressed( () => {
+    trainEpoch(training);
+    epochCounter++;
+    let percent = testAll(testing);
+    console.log("Epoch: " + epochCounter + "  Percent Correct: " + nf(percent,2,2) + "%");
+  });
+
+  let testButton = select('#test');
+  testButton.mousePressed( () => {
+    let percent = testAll(testing);
+    console.log("Percent Correct: ", nf(percent,2,2), "%");
+  });
+
+  // Sample the canvas space for the user's drawing and create a 28*28 sample
+  let guessButton = select('#guess');
+  guessButton.mousePressed( () => {
     let inputs = [];
-    for (let j = 0; j < data.length; j++) {
-      inputs[j] = data[j] / 255.0;
+    let img = get(); // grab all pixels from the canvas
+    img.resize(28,28);
+    img.loadPixels();
+    for (let i = 0; i < len; i++) {
+      let brightness = img.pixels[i*4];
+      inputs[i] = (255 - brightness) / 255.0;
     }
-    let label = training[i].label;
 
-    // create a "one-hot" output array
-    let targets = [0,0,0];
-    targets[label] = 1;
+    let guess = nn.predict(inputs);
+    let m = max(guess);
+    let classification = guess.indexOf(m);
+    if (classification === CAT) {
+      console.log("cat");
+    } else if (classification === RAINBOW) {
+      console.log("rainbow");
+    } else if (classification === TRAIN) {
+      console.log("train");
+    }
+  });
 
-    nn.train(inputs, targets);
+  let clearButton = select('#erase');
+  clearButton.mousePressed( () => {
+    background(255);
+  });
 
-  }
-
-  console.log("trained for one epoch");
-
-
+  // Obsolete: read data from file into an array then this code displays the image
   // Visualise the images to make sure we're reading them correctly ------------
   // let total = 100;
   // // for all the images
@@ -117,4 +132,15 @@ function setup() {
   // }
   // ---------------------------------------------------------------------------
 
+}
+
+
+
+function draw() {
+  // background(255);
+  strokeWeight(6);
+  stroke(0);
+  if (mouseIsPressed) {
+    line(pmouseX, pmouseY,mouseX, mouseY);
+  }
 }
