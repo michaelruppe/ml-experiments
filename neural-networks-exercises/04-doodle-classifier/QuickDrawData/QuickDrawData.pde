@@ -1,7 +1,7 @@
 // Preprocessing the image data for later use in a p5.js script
 // this will select a smaller dataset from the larger set
 
-byte[] data = loadBytes("data/cat.npy");
+byte[] data = loadBytes("data/house.npy");
 int imgDim = 28;                // length of image side in pixels
 int imgRes = imgDim * imgDim;   // number of pixels in an image
 size(280, 280);                 // 10x10 grid of images
@@ -33,4 +33,4 @@ for (int n = 0; n < total; n++) {
   image(img, x, y);
 }
 
-saveBytes("cat1000.bin", outdata);
+saveBytes("house1000.bin", outdata);

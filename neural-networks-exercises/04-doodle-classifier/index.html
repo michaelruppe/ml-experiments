@@ -1,7 +1,8 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+  <!-- <script language="javascript" type="text/javascript" src="libraries/p5.js"></script> -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
   <!-- uncomment lines below to include extra p5 libraries -->
   <script language="javascript" src="libraries/p5.dom.min.js"></script>
   <!--<script language="javascript" src="libraries/p5.sound.js"></script>-->
@@ -14,7 +15,7 @@
   <!-- <style> body {padding: 0; margin: 0;} </style> -->
   <style>
   	body {
-  		background-color: #AAA;
+  		background-color: #FFDAB9;
   	}
   	button {
   		font-size: 12pt;
@@ -25,10 +26,41 @@
 
 <body>
   <h2>Doodle classifier</h2>
-  Draw a simple cat, rainbow, train, or cow!
-  <button id="train">train neural network</button>
-  <button id="test">test</button>
-  <button id="guess">guess</button>
-  <button id="erase">erase</button>
+  <p>  Draw a simple <b>cat, house, fish, or guitar</b>!
+    Then let the Doodle Classifer<button id="guess">guess</button>which one you've drawn.</p>
+  Perhaps it guesses incorrectly,<button id="train">train</button>the neural network, and guess again (training takes a few seconds).
+  <p></p>
+  Feel free to<button id="erase">erase</button>and try drawing something else.
+  <div id="result-holder">
+       <!-- guess will display here -->
+  </div>
+  <div id="sketch-holder">
+       <!-- sketch will go here! -->
+  </div>
+  <p><b>Note:</b> It's best if your drawing fills the box - try not to make it too small!
+  Also, the neural network is about as accurate as it can be after only one round of training.</p>
+  <button id="test">test</button>(This is for debugging, you'll need your console open)
+
+
+
+  <h3>What's going on here?</h3>
+    The Doodle Guesser starts out untrained - randomly guessing what you've drawn - pretty sucky.
+    When you train the Doodle Guesser, a neural network is trained with a set of real, labelled doodles of cats, fish and houses and guitars - 800 of each
+    The labels are used to make corrections to any incorrect guesses by tweaking the neurons within the network.
+    The Doodle Guesser can still only <i>guess</i> at what you've drawn, there's no label. Hopefully after a round of training it's not too shabby.
+    <p></p>
+    <p></p>
+    <p></p>
+
+  <h3>How did you make this?</h3>
+  You can get the source code for this project from the <a href="https://github.com/michaelruppe/ml-experiments/tree/master/neural-networks-exercises/04-doodle-classifier">github repo</a>
+  <p>This is my first stab at a neural network! It's garbage, but it's mine :)
+  The network is a naieve approach for image classication - a fully connected 3 layer network (784 input pixels, 1 Hidden layer with 16 perceptrons, and a 4 outputs)</p>
+  <p>It's coded with <a href="https://p5js.org/">p5.js</a>, a JavaScript library that allows for easily coding interactive, graphical scripts for the web.
+  The Doodle Guesser is really an neural network programming example offered by <a href="https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw">The Coding Train</a>.
+  If you want to build it yourself I'd recommend following along with:</p>
+  <p><a href="https://www.youtube.com/playlist?list=PLRqwX-V7Uu6Zs14zKVuTuit6jApJgoYZQ">Session 4 - Neural Networks - Intelligence and Learning</a></p>
+  <p><a href="https://www.youtube.com/playlist?list=PLRqwX-V7Uu6Y7MdSCaIfsxc561QI0U0Tb">Session 5 - Doodle Classifier - Intelligence and Learning</a></p>
+  <p>The doodle data is from Google's <a href="https://github.com/googlecreativelab/quickdraw-dataset">QuickDraw</a></p>
 </body>
 </html>

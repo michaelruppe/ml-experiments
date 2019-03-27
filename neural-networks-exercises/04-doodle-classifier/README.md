@@ -1,3 +1,5 @@
+*TODO* See the script working here: 
+
 Following along with the playlist on Coding Train:
 [Session 5 - Doodle Classifier - Intelligence and learning](
 https://www.youtube.com/playlist?list=PLRqwX-V7Uu6Zs14zKVuTuit6jApJgoYZQ)

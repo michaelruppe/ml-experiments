@@ -7,7 +7,7 @@ function trainEpoch(training) {
     let inputs = Array.from(data).map(x => x / 255); // map passes all elements through a function, and we define the function
     //Array() is used because data.map(x => x/255); returns only Uint8 but we want floating points
     let label = training[i].label;
-    let targets = [0,0,0]; // create a "one-hot" output array
+    let targets = [0,0,0,0]; // create a "one-hot" output array IMPORTANT must match output array size
     targets[label] = 1;
 
     nn.train(inputs, targets);
