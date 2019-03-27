@@ -1,4 +1,5 @@
-### See the script working [here](https://michaelruppe.github.io/ml-experiments/neural-networks-exercises/04-doodle-classifier/index.html)
+# Doodle Classifier
+Use a simple neural network to identify a user's drawing. See the script working [here](https://michaelruppe.github.io/ml-experiments/neural-networks-exercises/04-doodle-classifier/index.html)
 
 Following along with the playlist on Coding Train:
 [Session 5 - Doodle Classifier - Intelligence and learning](
