@@ -1,14 +1,26 @@
-// Webcam image classification with mobilenet. Essentially re-creating the
-// examples from ml5 website
-// https://youtu.be/D9BoBSkLvFo
+// transfer learning to train the network to recognise new objects
+// https://youtu.be/eeO-rWYFuG0
+
+// It seems like some things have been updated. we're now using
+// object.classify() instead of object.predict()
 
 let mobilenet;
+let classifier
 let video;
 let label = '';
+let handButton;
+let footButton;
+let trainButton;
+let blankButton;
+
 
 function modelReady() {
   console.log('Model is ready');
-  mobilenet.predict(gotResults);
+
+}
+
+function videoReady() {
+  console.log('Video is ready');
 
 }
 
@@ -16,23 +28,54 @@ function modelReady() {
 function gotResults(error, results) {
   if (error) {
   } else {
-    label = results[0].className;
+    label = results;
     let prob = results[0].probability;
-    console.log(label);
-    mobilenet.predict(gotResults);
+    // console.log(label);
+    classifier.classify(gotResults);
 
   }
 }
 
+function whileTraining(loss) {
+  if (loss == null) {
+    console.log("training complete");
+    classifier.classify(gotResults);
+  } else {
+    console.log(loss);
+  }
+}
 
 function setup() {
   createCanvas(640, 550);
   video = createCapture(VIDEO).hide();
   background(0);
 
-  // Set up mobilenet to work continuously with the video
-  // recall the previous example was:   mobilenet = ml5.imageClassifier('MobileNet', modelReady);
-  mobilenet = ml5.imageClassifier('MobileNet', video, modelReady);
+  // NOTE mobilenet is now a feature extractor
+  mobilenet = ml5.featureExtractor('MobileNet',  modelReady);
+  classifier = mobilenet.classification(video, videoReady);
+
+  let handButton = createButton('capture neutral expression');
+  handButton.mousePressed( ()=> {
+    classifier.addImage('neutral');
+    console.log('Sampled');
+  })
+
+  let footButton = createButton('capture happy expression');
+  footButton.mousePressed( ()=> {
+    classifier.addImage('happy');
+    console.log('Sampled');
+  })
+
+  let controlButton = createButton('capture angry expression');
+  controlButton.mousePressed( ()=> {
+    classifier.addImage('angry');
+    console.log('Sampled');
+  })
+
+  let trainButton = createButton('train');
+  trainButton.mousePressed( ()=> {
+    classifier.train(whileTraining);
+  })
 
 }
 
