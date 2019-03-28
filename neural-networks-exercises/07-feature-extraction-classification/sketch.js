@@ -4,6 +4,9 @@
 // It seems like some things have been updated. we're now using
 // object.classify() instead of object.predict()
 
+// NOTE mobilenet is now a feature extractor
+
+
 let mobilenet;
 let classifier
 let video;
@@ -50,7 +53,6 @@ function setup() {
   video = createCapture(VIDEO).hide();
   background(0);
 
-  // NOTE mobilenet is now a feature extractor
   mobilenet = ml5.featureExtractor('MobileNet',  modelReady);
   classifier = mobilenet.classification(video, videoReady);
 

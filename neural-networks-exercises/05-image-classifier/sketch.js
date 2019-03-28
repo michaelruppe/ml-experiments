@@ -33,7 +33,7 @@ function gotResults(error, results) {
 
 function setup() {
   createCanvas(640, 480);
-  puffin = createImg('images/blue-footed-booby.jpg', imageReady).hide();
+  puffin = createImg('images/toucan.jpg', imageReady).hide();
   background(0);
 
   mobilenet = ml5.imageClassifier('MobileNet', modelReady);
