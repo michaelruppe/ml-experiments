@@ -77,7 +77,7 @@ function getModel() {
   model.add(tf.layers.conv2d({
     inputShape: [IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS],
     kernelSize: 5,  // Size of the sliding convolutional filter
-    filters: 8,     // number of filter windows of size kernelSize to apply to input data
+    filters: 8,     // Output size; or number of filter windows of size kernelSize to apply to input data
     strides: 1,     // the 'step-size' of the kernel i.e. how many pixels it will shift
     activation: 'relu',
     kernelInitializer: 'varianceScaling'
@@ -85,7 +85,10 @@ function getModel() {
 
   // The MaxPooling layer acts as a sort of downsampling using max values
   // in a region instead of averaging
-  model.add(tf.layers.maxPooling2d({poolSize: [2, 2], strides: [2, 2]}));
+  model.add(tf.layers.maxPooling2d({
+    poolSize: [2, 2], //2 by 2 will halve the input in both dimensions
+    strides: [2, 2]}
+  ));
 
   // Repeat another conv2d + maxPooling stack
   // Note that we have more filters in the convolution
@@ -97,6 +100,8 @@ function getModel() {
     kernalInitializer: 'varianceScaling'
   }));
   model.add(tf.layers.maxPooling2d({poolSize: [2, 2], strides: [2, 2]}));
+
+
 
   // Now flatten the output from the 2D filters into a 1D vector to prepare
   // it for input into our last layer. This is common practice when feeding
