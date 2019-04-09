@@ -112,6 +112,8 @@ function draw() {
   // ***************************************************************************
   // background(135,206,235);
   background(spriteBackground)
+  image(spriteGround, 0, height - 10, width, spriteGround.height)
+
   for (let bird of birds) {
     bird.show();
   }
@@ -125,4 +127,5 @@ function preload() {
   spriteBird = loadImage('art/bird.png');
   spriteBackground = loadImage('art/background-day.png');
   spritePipe = loadImage('art/pipe-green.png');
+  spriteGround = loadImage('art/base.png')
 }
