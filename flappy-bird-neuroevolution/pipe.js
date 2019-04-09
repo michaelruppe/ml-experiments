@@ -11,10 +11,16 @@ class Pipe{
   }
 
   show() {
-    fill(this.col);
-    rectMode(CORNER)
-    rect(this.x, 0, this.w, this.top);
-    rect(this.x, this.bottom, this.w, height);
+    // Show the hitbox
+    // fill(this.col);
+    // rectMode(CORNER)
+    // rect(this.x, -5, this.w, this.top); // draw off top edge to hide the stroke
+    // rect(this.x, this.bottom, this.w, height);
+
+    image(spritePipe, this.x-1, this.bottom)
+    push(); translate(this.x+this.w+2, this.top-5); rotate(PI);
+    image(spritePipe, 0, 0);
+    pop();
   }
 
   update() {

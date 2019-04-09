@@ -2,7 +2,7 @@
  * Neuroevolution of flappy birds
  *
  * TODO:
- *  - bird sprite
+ *  - NEAT
  *  - load pretrained
  *  - show highest scoring
  *  - add 'immigration' to the population: new, random agents
@@ -21,6 +21,8 @@ let speedSlider;
 let genText;
 let scoreText;
 let spriteBird;
+let spriteBackground;
+let spritePipe;
 
 
 // Save a bird
@@ -108,7 +110,8 @@ function draw() {
   // ***************************************************************************
   // *  ANIMATION
   // ***************************************************************************
-  background(135,206,235);
+  // background(135,206,235);
+  background(spriteBackground)
   for (let bird of birds) {
     bird.show();
   }
@@ -120,4 +123,6 @@ function draw() {
 
 function preload() {
   spriteBird = loadImage('art/bird.png');
+  spriteBackground = loadImage('art/background-day.png');
+  spritePipe = loadImage('art/pipe-green.png');
 }
