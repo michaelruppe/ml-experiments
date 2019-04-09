@@ -25,9 +25,14 @@ class Bird {
   }
 
   show() {
-    rectMode(RADIUS);
-    fill(255,50);
-    rect(this.x, this.y, this.r, this.r);
+    // rectMode(RADIUS);
+    // fill(255,255,51);
+    // rect(this.x, this.y, this.r, this.r);
+    let angle = map(this.vel,-10,10,-PI/4,PI/4);
+    push(); translate(this.x, this.y); rotate(angle);
+    imageMode(CENTER)
+    image(spriteBird,0,0);
+    pop();
   }
 
 

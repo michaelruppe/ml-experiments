@@ -6,7 +6,7 @@ class Pipe{
     this.w = 48;
     this.x = width + this.w; // start outside right
     this.speed = 2;
-    this.col = color(255,255,255); // colour changes depending on hit-state
+    this.col = color(199,234,70); // colour changes depending on hit-state
 
   }
 
@@ -35,7 +35,7 @@ class Pipe{
   hit(bird) {
     if (bird.y-bird.r < this.top || bird.y+bird.r > this.bottom) {
       if (bird.x+bird.r >= this.x && bird.x-bird.r <= this.x + this.w) {
-        this.col = color(255,0,0);
+        this.col = color(220,20,60); //crimson
         return true;
       }
     }
