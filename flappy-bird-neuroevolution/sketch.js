@@ -3,9 +3,11 @@ let birds = [];
 let savedBirds = []
 let pipes = [];
 let counter = 0;
+let bestScore = 0;
 let genCounter = 1;
 let speedSlider;
 let genText;
+let scoreText;
 
 function keyPressed() {
   if(key == 's'){
@@ -18,8 +20,10 @@ function keyPressed() {
 function setup() {
   let canvas = createCanvas(600,500);
   canvas.parent('sketch-holder');
-  genText = createP('Generation: <b>' + genCounter + '</b>');
+  genText = createP(' ');
   genText.parent('gen-holder');
+  scoreText = createP(' ');
+  scoreText.parent('score-holder');
 
   background(0);
   speedSlider = createSlider(1,100,1);
@@ -31,6 +35,11 @@ function setup() {
 
 
 function draw() {
+
+  // DOM elements
+  genText.html('Generation: ' + genCounter);
+  scoreText.html('Current score: ' + counter + '<br>  Best score: ' + bestScore);
+
   // Allow user to speed up evolution (skips animating for some number of frames)
   for (let loops = 0; loops < speedSlider.value(); loops++) {
     // generate pipes periodically
@@ -67,6 +76,8 @@ function draw() {
       bird.update();
     }
 
+    if(counter > bestScore) bestScore = counter;
+
     // Create new population when all die, clear screen
     if (birds.length === 0) {
       counter = 0;
@@ -75,7 +86,6 @@ function draw() {
       pipes = [];
     }
 
-    genText.html('Generation: <b>' + genCounter + '</b>');
 
   }
 
