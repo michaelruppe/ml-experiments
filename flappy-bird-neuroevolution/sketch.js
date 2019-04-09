@@ -119,5 +119,5 @@ function draw() {
 }
 
 function preload() {
-  spriteBird = loadImage('art/bird2.png');
+  spriteBird = loadImage('art/bird.png');
 }
