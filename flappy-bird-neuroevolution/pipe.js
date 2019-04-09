@@ -1,10 +1,10 @@
 class Pipe{
   constructor() {
-    this.gap = random(75,130);
-    this.top = random(height - this.gap);
-    this.bottom = height - this.top - this.gap // *Lengths* not y-ordinates
-    this.w = 25;
-    this.x = width; // start outside right
+    this.gap = 150;
+    this.top = random(height - this.gap); // y-ordinate of pipe location
+    this.bottom = this.top + this.gap
+    this.w = 48;
+    this.x = width + this.w; // start outside right
     this.speed = 2;
     this.col = color(255,255,255); // colour changes depending on hit-state
 
@@ -14,7 +14,7 @@ class Pipe{
     fill(this.col);
     rectMode(CORNER)
     rect(this.x, 0, this.w, this.top);
-    rect(this.x, height - this.bottom, this.w, height);
+    rect(this.x, this.bottom, this.w, height);
   }
 
   update() {
@@ -24,12 +24,16 @@ class Pipe{
   // check if pipe is off the left side of the screen
   // used for removing pipes from array
   offscreen() {
-    return (this.x < -this.w);
+    if (this.x < -this.w){
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // collision detection TODO write function for intersection between circle and rectangle
   hit(bird) {
-    if (bird.y-bird.r < this.top || bird.y+bird.r > height-this.bottom) {
+    if (bird.y-bird.r < this.top || bird.y+bird.r > this.bottom) {
       if (bird.x+bird.r >= this.x && bird.x-bird.r <= this.x + this.w) {
         this.col = color(255,0,0);
         return true;
@@ -38,6 +42,16 @@ class Pipe{
     this.col = color(255,255,255);
     return false;
   }
+  // hit(bird) {
+  //   if (bird.y < this.top || bird.y > this.bottom) {
+  //     if (bird.x >= this.x && bird.x <= this.x + this.w) {
+  //       this.col = color(255,0,0);
+  //       return true;
+  //     }
+  //   }
+  //   this.col = color(255,255,255);
+  //   return false;
+  // }
 
 
 }
