@@ -5,14 +5,25 @@ let pipes = [];
 let counter = 0;
 let genCounter = 1;
 let speedSlider;
+let genText;
 
+function keyPressed() {
+  if(key == 's'){
+    let bird = birds[0];
+    saveJSON(bird.brain, 'bird.json');
+  }
+}
 
 
 function setup() {
-  createCanvas(600,500)
+  let canvas = createCanvas(600,500);
+  canvas.parent('sketch-holder');
+  genText = createP('Generation: <b>' + genCounter + '</b>');
+  genText.parent('gen-holder');
+
   background(0);
   speedSlider = createSlider(1,100,1);
-
+  speedSlider.parent('slider-holder')
   for (let i = 0; i < POPULATION; i++){
     birds.push(new Bird());
   }
@@ -63,6 +74,9 @@ function draw() {
       nextGen();
       pipes = [];
     }
+
+    genText.html('Generation: <b>' + genCounter + '</b>');
+
   }
 
 

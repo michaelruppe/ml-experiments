@@ -4,22 +4,16 @@ class Bird {
     this.x = 64;
     this.vel = 0;       // vertical velocity
     this.r = 12;        // edge length
-    this.gravity = 0.8; // gravity
-    this.lift = -12;    // lift force
+    this.gravity = 0.8;
+    this.lift = -13;    // lift force
 
     this.score = 0;     // raw score, incremented for each frame
     this.fitness = 0;   // fitness to be normalised among population set
 
     /* The Neural Network
-     *   INPUTS [bird.y, closestPipe.x, closestPipeHi, closestPipeLo]
+     *   INPUTS [bird.y, bird.velocity, closestPipe.x, closestPipeHi, closestPipeLo]
      *   HIDDEN [ User choice ]
      *  OUTPUTS [flap]
-     *
-     * TODO:
-     *  Homework - input multiple pipes for a look-ahead approach. Still relies
-     *             on user feature-selection though and probably doesn't
-     *             contribute much value. Instead, perhaps:
-     *  Homework - Input downsampled game pixels for a more general solution
      */
      if (brain) {
        this.brain = brain.copy();
@@ -61,7 +55,8 @@ class Bird {
       closest.top / height
     ];
     let output = this.brain.predict(inputs);
-    if (output[0] > 0.5) this.up();
+    // * Can only flap when not moving up! *
+    if (output[0] > 0.5 && this.vel >= 0) this.up();
   }
 
   update() {
