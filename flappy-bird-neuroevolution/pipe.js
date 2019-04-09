@@ -1,6 +1,6 @@
 class Pipe{
   constructor() {
-    this.gap = 150;
+    this.gap = 125;
     this.top = random(height - this.gap); // y-ordinate of pipe location
     this.bottom = this.top + this.gap
     this.w = 48;
@@ -39,7 +39,6 @@ class Pipe{
         return true;
       }
     }
-    this.col = color(255,255,255);
     return false;
   }
   // hit(bird) {

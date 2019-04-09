@@ -1,4 +1,4 @@
-const POPULATION = 1000;
+const POPULATION = 500;
 let birds = [];
 let savedBirds = []
 let pipes = [];
@@ -9,7 +9,7 @@ let speedSlider;
 
 
 function setup() {
-  createCanvas(400,600)
+  createCanvas(600,500)
   background(0);
   speedSlider = createSlider(1,100,1);
 
@@ -25,7 +25,7 @@ function draw() {
     // generate pipes periodically
     if (counter++ % 150 == 0) pipes.push(new Pipe());
 
-    // step through array backwards to accommodate element removal
+    // Check everything to do with pipes
     for (var i = pipes.length - 1; i >= 0; i--) {
       pipes[i].update();
 
@@ -34,16 +34,19 @@ function draw() {
         if (pipes[i].hit(birds[j])){
           // hit pipe
            savedBirds.push( birds.splice(j,1)[0] ); // splice returns an array, but we always splice 1 element to take the 0th
-         } else if (birds[j].y == height - birds[j].r || birds[j].y == birds[j].r) {
-           // hit upper- or lower-bound
-           savedBirds.push( birds.splice(j,1)[0] );
          }
       }
-
 
       // Remove offscreen pipes
       if (pipes[i].offscreen()) {
         pipes.splice(i, 1);
+      }
+    }
+
+    // Eliminate off-screen birds, storing their neural net for later
+    for (var i = birds.length - 1; i >= 0; i--){
+      if (birds[i].offScreen()) {
+        savedBirds.push( birds.splice(i,1)[0] );
       }
     }
 
