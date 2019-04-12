@@ -30,7 +30,7 @@ function calculateFitness() {
   for (let gun of savedGuns) {
     gun.fitness = gun.score / sum;
     if (gun.fitness > bestGun.fitness){
-      bestGun = gun.fitness;
+      bestGun = gun;
     }
   }
 }
