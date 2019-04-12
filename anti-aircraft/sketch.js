@@ -37,7 +37,14 @@ function setup() {
 
 function draw() {
   background(135,206,235);
+
+  // Periodically generate planes
+  if(counter % 300 == 0) {
+    planes.push(new Plane())
+  }
+
   for(let gun of guns) {
+    if(planes.length > 0) gun.think(planes); // control the gun
     gun.update();
     gun.show();
     for(let p of gun.projs) {
@@ -61,7 +68,6 @@ function draw() {
         let r = gun.projs[i].distanceTo(planes[0]);
         if (r < gun.projs[i].minDistance) {
           gun.projs[i].minDistance = r;
-          console.log(gun.projs[i].minDistance);
         }
       }
 
@@ -79,10 +85,7 @@ function draw() {
 
 
 
-  // Periodically generate planes
-  if(counter % 300 == 0) {
-    planes.push(new Plane())
-  }
+
 
   counter++
 

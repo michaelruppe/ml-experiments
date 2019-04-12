@@ -11,20 +11,20 @@ function nextGen() {
 
 
   for(let i = 0; i < POPULATION; i++){
-    birds[i] = pickOne();
+    guns[i] = pickOne();
   }
 
-  savedBirds = [];
+  savedGuns = [];
 }
 
 // Normalise the scores. There are other ways to map score to fitness, like power laws or logs etc
 function calculateFitness() {
   let sum = 0;
-  for (let bird of savedBirds) {
-    sum += bird.score;
+  for (let gun of savedGuns) {
+    sum += gun.score;
   }
-  for (let bird of savedBirds) {
-    bird.fitness = bird.score / sum;
+  for (let gun of savedGuns) {
+    gun.fitness = gun.score / sum;
   }
 
 }
@@ -37,13 +37,13 @@ function pickOne() {
   let r = random(1);
 
   while(r > 0) {
-    r = r - savedBirds[index].fitness;
+    r = r - savedGuns[index].fitness;
     index++;
   }
   index--;
 
-  let bird = savedBirds[index];
-  let child = new Bird(bird.brain);
+  let bird = savedGuns[index];
+  let child = new gun(gun.brain);
   child.mutate(mut);
   return child;
 }
