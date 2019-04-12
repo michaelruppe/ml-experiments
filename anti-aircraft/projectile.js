@@ -21,9 +21,15 @@ class Projectile {
     return (this.x.x < 0 || this.x.y > height || this.x.x > width)
   }
 
-  hits(plane) {
-    return (abs(this.x.x - plane.x) < plane.hitRadius && abs(this.x.y - plane.y) < plane.hitRadius)
+  // return the distance of projectile to a plane
+  distanceTo(plane){
+    let r = p5.Vector.sub(this.x, createVector(plane.x, plane.y) );
+    return r.mag();
   }
 
+  // Returns true if a direct hit is scored
+  hits(plane) {
+    return (this.distanceTo(plane) < plane.hitRadius)
+  }
 
 }

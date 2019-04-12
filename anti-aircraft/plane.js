@@ -6,7 +6,7 @@ class Plane{
 
     this.l = 20;
     this.w = 10;
-    this.hitRadius = this.l;
+    this.hitRadius = this.l / 2;
   }
 
   update(){

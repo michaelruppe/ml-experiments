@@ -56,6 +56,9 @@ function draw() {
   for(let gun of guns) {
     for (let i = gun.projs.length-1; i >= 0; i--){
       for (let j = planes.length-1; j >= 0; j--) {
+        // update score per gun
+
+
         if (gun.projs[i].hits(planes[j])) {
           planes.splice(j,1);
           gun.projs.splice(i,1);
