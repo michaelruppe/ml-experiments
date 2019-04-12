@@ -4,14 +4,17 @@
  *
  ******************************************************************************/
 
-const POPULATION = 1;
-let guns = [];
-let projs = [];
+const POPULATION = 5000;
+let gunIndex = 0;   // testing one gun at a time unhappyface
+let guns = [];      // guns that are to be tested
+let gun;            // gun currently being tested
+let savedGuns = []; // guns already tested that failed
 let planes = [];
-let gun;
-let savedBirds = []
+
+let passedPlanes = 0; // keep track of how many planes pass the gun
 let counter = 0;
 let bestScore = 0;
+let bestGun;
 let genCounter = 1;
 let speedSlider;
 let genText;
@@ -28,39 +31,43 @@ function setup() {
   genText.parent('gen-holder');
   scoreText = createP(' ');
   scoreText.parent('score-holder');
-  speedSlider = createSlider(1,100,1);
+  speedSlider = createSlider(1,100000,1);
   speedSlider.parent('slider-holder');
 
   for(let i = 0; i < POPULATION; i++) guns.push(new Gun());
+  gun = guns[gunIndex]; // select the first gun in the population
+  bestGun = guns[guns.length-1]; // need to instantiate with something cant use the first
 }
 
 
 function draw() {
-  background(135,206,235);
-
-  // Periodically generate planes
-  if(counter % 300 == 0) {
-    planes.push(new Plane())
+  if(speedSlider.value == 0) {
+     gun = bestGun;
+  } else {
+    gun = guns[gunIndex];
   }
+  for (let loops = 0; loops < speedSlider.value(); loops++){
 
-  for(let gun of guns) {
+    // Periodically generate planes
+    if(counter % 300 == 0) {
+      planes.push(new Plane())
+    }
+
+
     if(planes.length > 0) gun.think(planes); // control the gun
     gun.update();
-    gun.show();
+    // gun.show();
     for(let p of gun.projs) {
       p.update();
-      p.show();
+      // p.show();
     }
-  }
 
-  for(let plane of planes){
-    plane.update();
-    plane.show();
+    for(let plane of planes){
+      plane.update();
+      // plane.show();
+    }
 
-  }
-
-  //hit detection
-  for(let gun of guns) {
+    //hit detection
     for (let i = gun.projs.length-1; i >= 0; i--){
 
       if (planes.length > 0) { // hack
@@ -81,36 +88,50 @@ function draw() {
         }
       }
     }
-  }
 
+    counter++;
 
-
-
-
-  counter++
-
-  // remove offscreen planes
-  for(let i = planes.length-1; i >= 0; i--) {
-    if (planes[i].offscreen()) planes.splice(i,1);
-  }
-
-  // remove offscreen projectiles, accumulating their score to gun
-  for(let gun of guns) {
+    // remove offscreen projectiles, accumulating their score to gun
     for (let i = gun.projs.length-1; i >= 0; i--){
       if (gun.projs[i].offscreen()){
         gun.score += map(gun.projs[i].minDistance,0,100,100,0, true);
         gun.projs.splice(i,1);
       }
     }
+    // remove offscreen planes
+    for(let i = planes.length-1; i >= 0; i--) {
+      if (planes[i].offscreen()) {
+        planes.splice(i,1);
+        passedPlanes++;
+      }
+    }
+
+    // fail the gun if too many planes pass (only when not demoing the best gun)
+    if (passedPlanes > 0 && speedSlider.value() > 1){
+      savedGuns.push( guns.splice(gunIndex,1)[0] );
+      passedPlanes = 0;
+    }
+
+    // Create new population when all die, clear screen
+    if (guns.length === 0) {
+      counter = 0;
+      genCounter++;
+      nextGen();
+      planes = [];
+    } else {
+      gun = guns[gunIndex]; // update the current gun to test
+    }
+  }
+
+  background(135,206,235);
+  gun.show();
+  for(let p of gun.projs) {
+    p.show();
+  }
+  for(let plane of planes){
+    plane.show();
   }
 
 
-}
 
-
-function mouseClicked() {
-  for(let gun of guns) {
-    gun.shoot();
-
-  }
 }

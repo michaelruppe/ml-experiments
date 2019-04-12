@@ -1,8 +1,8 @@
 class Plane{
   constructor() {
     this.x = 0;
-    this.y = random(height/2)
-    this.v = 3;
+    this.y = random(20, height/2)
+    this.v = random(2,4);
 
     this.l = 20;
     this.w = 10;

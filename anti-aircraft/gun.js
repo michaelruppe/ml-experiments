@@ -30,7 +30,7 @@ class Gun {
      if (brain) {
        this.brain = brain.copy();
      } else {
-       this.brain = new NeuralNetwork(3, 3, 2); // Every bird needs a brain
+       this.brain = new NeuralNetwork(3, 8, 2); // Every bird needs a brain
        // this.brain.setActivationFunction(this.brain.tanh)
      }
 
@@ -53,7 +53,7 @@ class Gun {
     let closestDistance = Infinity;
     for (let i = 0; i < planes.length; i++) {
       let d = this.x - planes[i].x
-      
+
       if (d < closestDistance && d > 0) {
         closestDistance = d;
         closest = planes[i];

@@ -7,6 +7,7 @@ let mutationRate = 0.1;
 function nextGen() {
   console.log('new gen')
 
+  // Calculate fitness of all guns, and return best one
   calculateFitness();
 
 
@@ -20,13 +21,18 @@ function nextGen() {
 // Normalise the scores. There are other ways to map score to fitness, like power laws or logs etc
 function calculateFitness() {
   let sum = 0;
+  let bestFitness = 0;
+  let bestPerformer;
+
   for (let gun of savedGuns) {
     sum += gun.score;
   }
   for (let gun of savedGuns) {
     gun.fitness = gun.score / sum;
+    if (gun.fitness > bestGun.fitness){
+      bestGun = gun.fitness;
+    }
   }
-
 }
 
 // Select bird based on fitness, copy, and mutate
@@ -42,8 +48,8 @@ function pickOne() {
   }
   index--;
 
-  let bird = savedGuns[index];
-  let child = new gun(gun.brain);
+  let gun = savedGuns[index];
+  let child = new Gun(gun.brain);
   child.mutate(mut);
   return child;
 }
