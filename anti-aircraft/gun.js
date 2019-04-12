@@ -19,6 +19,11 @@ class Gun {
 
     this.score = 0;
 
+    this.cooldown = 0;      // cooldown timer. 0 = ready to shoot
+    this.cooldownAmt = 50;  // number of frames to cooldown gun
+
+    this.brain = new NeuralNetwork(3,3,2);
+
   }
 
   show() {
@@ -38,10 +43,16 @@ class Gun {
     let a = mouseX - this.gunX;
     this.gunA = atan2(o,a) - PI/2
 
+    this.cooldown--;
+    if(this.cooldown < 0) this.cooldown = 0;
+
   }
 
   shoot() {
-    this.projs.push( new Projectile(createVector(this.gunX,this.gunY), this.gunA+PI/2) );
+    if (this.cooldown === 0) {
+      this.projs.push( new Projectile(createVector(this.gunX,this.gunY), this.gunA+PI/2) );
+      this.cooldown = this.cooldownAmt;
+    }
   }
 
   calculateScore(plane) {

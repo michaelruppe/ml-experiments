@@ -80,7 +80,7 @@ function draw() {
 
 
   // Periodically generate planes
-  if(counter % 150 == 0) {
+  if(counter % 300 == 0) {
     planes.push(new Plane())
   }
 
