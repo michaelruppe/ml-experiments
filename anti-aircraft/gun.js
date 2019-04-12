@@ -31,12 +31,6 @@ class Gun {
   }
 
   update() {
-    // game logic - remove offscreen bullets
-    // remove offscreen projectiles
-    for(let i = this.projs.length-1; i >= 0; i--) {
-      if (this.projs[i].offscreen()) this.projs.splice(i,1);
-    }
-
     // Find gun-angle from mouse position
     let r = ((mouseX-this.gunX)*(mouseX-this.gunX)) + ((mouseY-this.gunY)*(mouseY-this.gunY));
     r = Math.sqrt(r);
@@ -48,5 +42,14 @@ class Gun {
 
   shoot() {
     this.projs.push( new Projectile(createVector(this.gunX,this.gunY), this.gunA+PI/2) );
+  }
+
+  calculateScore(plane) {
+    // loop through all bullets
+    for( let p of projs) {
+      // find minimum distance to a plane
+      let r = p.distanceTo(plane);
+    }
+
   }
 }

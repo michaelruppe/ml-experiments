@@ -5,6 +5,7 @@ class Projectile {
     let speed = 10;
     this.v = createVector(speed*cos(this.angle), speed*sin(this.angle));
     this.a = createVector(0, 7e-2);
+    this.minDistance = Infinity; // minimum distance-to-target
   }
 
   update() {
@@ -23,8 +24,8 @@ class Projectile {
 
   // return the distance of projectile to a plane
   distanceTo(plane){
-    let r = p5.Vector.sub(this.x, createVector(plane.x, plane.y) );
-    return r.mag();
+      let r = p5.Vector.sub(this.x, createVector(plane.x, plane.y) );
+      return r.mag();
   }
 
   // Returns true if a direct hit is scored

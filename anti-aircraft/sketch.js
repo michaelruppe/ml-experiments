@@ -55,13 +55,23 @@ function draw() {
   //hit detection
   for(let gun of guns) {
     for (let i = gun.projs.length-1; i >= 0; i--){
+
+      if (planes.length > 0) { // hack
+        // update projectile minimum distance
+        let r = gun.projs[i].distanceTo(planes[0]);
+        if (r < gun.projs[i].minDistance) {
+          gun.projs[i].minDistance = r;
+          console.log(gun.projs[i].minDistance);
+        }
+      }
+
       for (let j = planes.length-1; j >= 0; j--) {
-        // update score per gun
-
-
+        // Direct hit - apply score bonus and remove projectile, plane
         if (gun.projs[i].hits(planes[j])) {
+          gun.score += 1000;
           gun.projs.splice(i,1);
           planes.splice(j,1);
+          break; // projectile is now gone, so can't check it against other planes
         }
       }
     }
@@ -79,6 +89,16 @@ function draw() {
   // remove offscreen planes
   for(let i = planes.length-1; i >= 0; i--) {
     if (planes[i].offscreen()) planes.splice(i,1);
+  }
+
+  // remove offscreen projectiles, accumulating their score to gun
+  for(let gun of guns) {
+    for (let i = gun.projs.length-1; i >= 0; i--){
+      if (gun.projs[i].offscreen()){
+        gun.score += map(gun.projs[i].minDistance,0,100,100,0, true);
+        gun.projs.splice(i,1);
+      }
+    }
   }
 
 
