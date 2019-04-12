@@ -30,7 +30,7 @@ class Gun {
      if (brain) {
        this.brain = brain.copy();
      } else {
-       this.brain = new NeuralNetwork(3, 8, 2); // Every bird needs a brain
+       this.brain = new NeuralNetwork(4, 5, 2); // Every bird needs a brain
        // this.brain.setActivationFunction(this.brain.tanh)
      }
 
@@ -66,6 +66,7 @@ class Gun {
         closest.x / width,
         closest.y / height,
         closest.v / 10, // TODO check
+        this.cooldown,
       ];
       let output = this.brain.predict(inputs);
 

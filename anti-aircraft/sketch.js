@@ -4,7 +4,7 @@
  *
  ******************************************************************************/
 
-const POPULATION = 5000;
+const POPULATION = 500;
 let gunIndex = 0;   // testing one gun at a time unhappyface
 let guns = [];      // guns that are to be tested
 let gun;            // gun currently being tested
