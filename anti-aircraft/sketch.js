@@ -60,8 +60,8 @@ function draw() {
 
 
         if (gun.projs[i].hits(planes[j])) {
-          planes.splice(j,1);
           gun.projs.splice(i,1);
+          planes.splice(j,1);
         }
       }
     }
