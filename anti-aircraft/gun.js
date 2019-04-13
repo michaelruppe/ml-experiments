@@ -31,7 +31,7 @@ class Gun {
      if (brain) {
        this.brain = brain.copy();
      } else {
-       this.brain = new NeuralNetwork(4, 5, 2); // Every gun needs a brain
+       this.brain = new NeuralNetwork(4, 8, 2); // Every gun needs a brain
        // this.brain.setActivationFunction(this.brain.tanh)
      }
 

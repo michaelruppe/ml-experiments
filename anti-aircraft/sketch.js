@@ -50,7 +50,7 @@ function draw() {
   for (let loops = 0; loops < speedSlider.value(); loops++){
 
     // Periodically generate planes
-    if(counter % 300 == 0) {
+    if(counter++ % 300 == 0) {
       planes.push(new Plane())
     }
 
@@ -90,8 +90,6 @@ function draw() {
       }
     }
 
-    counter++;
-
     // remove offscreen projectiles, accumulating their score to gun
     for (let i = gun.projs.length-1; i >= 0; i--){
       if (gun.projs[i].offscreen()){
@@ -101,6 +99,7 @@ function draw() {
         gun.projs.splice(i,1);
       }
     }
+
     // remove offscreen planes
     for(let i = planes.length-1; i >= 0; i--) {
       if (planes[i].offscreen()) {
@@ -118,6 +117,11 @@ function draw() {
         bestScore = score;
       }
 
+      // Speed things along when no planes on-screen
+      if(planes.length == 0) {
+        counter = 0; // Force new plane to appear on next frame
+        gun.resetCooldown();
+      }
 
       // fail the gun if too many planes pass (only when not demoing the best gun)
       if (passedPlanes > 2){
@@ -136,12 +140,6 @@ function draw() {
         gun = guns[gunIndex]; // update the current gun to test
       }
 
-    } else {
-      // Tweaks to make demo mode more interesting
-      if(planes.length == 0) {
-        counter = 0; // Force new plane to appear on next frame
-        gun.resetCooldown();
-      }
     }
 
 
@@ -180,12 +178,13 @@ function toggleMode() {
     counter = 0;
     gun = new Gun(bestGun, true);
   } else {
-  // CONTINUE TRAINING
+  // CONTINUE TRAINING - reset environment and failure criteria
     mode = 'train'
     button.html('Now training...')
     gun.projs = []; // clear projectiles on screen
     planes = [];
     counter = 0;
     gun = guns[gunIndex];
+    passedPlanes = 0;
   }
 }
