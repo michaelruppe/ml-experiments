@@ -5,7 +5,7 @@ let mutationRate = 0.1;
 
 
 function nextGen() {
-  console.log('new gen')
+  // console.log('new gen')
 
   // Calculate fitness of all guns, and return best one
   calculateFitness();

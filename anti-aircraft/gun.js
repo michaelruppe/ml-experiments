@@ -1,5 +1,5 @@
 class Gun {
-  constructor(brain) {
+  constructor(brain, superpower = false) {
     this.baseW = 40;
     this.baseH = 30;
     this.gunL = 40;
@@ -18,6 +18,7 @@ class Gun {
     this.g;
 
     this.score = 0;
+    this.powerup = superpower;
 
     this.cooldown = 0;      // cooldown timer. 0 = ready to shoot
     this.cooldownAmt = 80;   // number of frames to cooldown gun
@@ -30,13 +31,18 @@ class Gun {
      if (brain) {
        this.brain = brain.copy();
      } else {
-       this.brain = new NeuralNetwork(4, 5, 2); // Every bird needs a brain
+       this.brain = new NeuralNetwork(4, 5, 2); // Every gun needs a brain
        // this.brain.setActivationFunction(this.brain.tanh)
      }
 
   }
 
   show() {
+    if(this.powerup == true){
+      fill(0,255,0);
+    } else {
+      fill(255);
+    }
     rectMode(CENTER);
     rect(this.x, this.y, this.baseW, this.baseH);
     push(); translate(this.gunX, this.gunY); rotate(this.gunA);
@@ -109,5 +115,11 @@ class Gun {
 
   mutate(mutationFunc) {
     this.brain.mutate(mutationFunc);
+  }
+
+
+  // Tool to manually reset cooldown. Useful for demo'ing the best gun
+  resetCooldown() {
+    this.cooldown = 0;
   }
 }
