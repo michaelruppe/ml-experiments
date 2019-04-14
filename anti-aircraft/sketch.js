@@ -117,12 +117,6 @@ function draw() {
         bestScore = score;
       }
 
-      // Speed things along when no planes on-screen
-      if(planes.length == 0) {
-        counter = 0; // Force new plane to appear on next frame
-        gun.resetCooldown();
-      }
-
       // fail the gun if too many planes pass (only when not demoing the best gun)
       if (passedPlanes > 2){
         savedGuns.push( guns.splice(gunIndex,1)[0] );
@@ -142,7 +136,11 @@ function draw() {
 
     }
 
-
+    // Speed things along when no planes on-screen
+    if(planes.length == 0) {
+      counter = 0; // Force new plane to appear on next frame
+      gun.resetCooldown();
+    }
 
   }
 
