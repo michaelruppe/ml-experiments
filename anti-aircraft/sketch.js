@@ -10,6 +10,8 @@ let guns = [];      // guns that are to be tested
 let gun;            // gun currently being tested
 let savedGuns = []; // guns already tested that failed
 let planes = [];
+let brainJSON;     // the pretrained NeuralNetwork
+let pretrained;
 
 let passedPlanes = 0; // keep track of how many planes pass the gun
 let counter = 0;
@@ -20,15 +22,24 @@ let genCounter = 1;
 let speedSlider;
 let genText;
 let scoreText;
-let button;
+let modeButton;
 let mode = 'train';
+let demoButton;
 
-
+function preload() {
+  brainJSON = loadJSON('assets/pretrained.json')
+}
 
 function setup() {
   let canvas = createCanvas(800,500);
   canvas.parent('sketch-holder');
-  button = createButton('Now training...');
+
+  // brainJSON only contains weights and biases. This function creates a real
+  // NeuralNetwork object
+  pretrained = NeuralNetwork.deserialize(brainJSON);
+
+  modeButton = createButton('Now training...');
+  demoButton = createButton('Normal Mode');
 
   textFont('Helvetica'); textSize(12)
   genText = createP(' ');
@@ -37,8 +48,10 @@ function setup() {
   scoreText.parent('score-holder');
   speedSlider = createSlider(1,100000,1);
   speedSlider.position(30, height+40)
-  button.position(speedSlider.x + speedSlider.width + 30, height+25);
-  button.mousePressed(toggleMode);
+  modeButton.position(speedSlider.x + speedSlider.width + 30, height+25);
+  modeButton.mousePressed(toggleTrainingMode);
+  demoButton.position(modeButton.x + modeButton.width + 30, modeButton.y);
+  demoButton.mousePressed(toggleDemoMode);
 
   for(let i = 0; i < POPULATION; i++) guns.push(new Gun());
   gun = guns[gunIndex]; // select the first gun in the population
@@ -140,6 +153,7 @@ function draw() {
     if(planes.length == 0) {
       counter = 0; // Force new plane to appear on next frame
       gun.resetCooldown();
+      gun.projs = [];
     }
 
   }
@@ -165,11 +179,11 @@ function draw() {
 }
 
 
-function toggleMode() {
-  // DEMO THE BEST
+function toggleTrainingMode() {
+  // Demo the best gun trained so far
   if (mode === 'train'){
     mode = 'showBest'
-    button.html('Showing best')
+    modeButton.html('Showing best')
     speedSlider.value(1);
     gun.projs = []; // clear projectiles on screen
     planes = [];
@@ -178,7 +192,32 @@ function toggleMode() {
   } else {
   // CONTINUE TRAINING - reset environment and failure criteria
     mode = 'train'
-    button.html('Now training...')
+    modeButton.html('Now training...')
+    gun.projs = []; // clear projectiles on screen
+    planes = [];
+    counter = 0;
+    gun = guns[gunIndex];
+    passedPlanes = 0;
+  }
+}
+
+function toggleDemoMode() {
+  // Demo the best gun trained so far
+  if (mode === 'train'){
+    mode = 'showPretrained'
+    demoButton.html('Showing pretrained');
+    modeButton.hide();
+    speedSlider.value(1);
+    gun.projs = []; // clear projectiles on screen
+    planes = [];
+    counter = 0;
+    gun = new Gun(pretrained, true);
+  } else {
+  // CONTINUE TRAINING - reset environment and failure criteria
+    mode = 'train'
+    demoButton.html('Normal Mode');
+    modeButton.show();
+    modeButton.html('Now training...')
     gun.projs = []; // clear projectiles on screen
     planes = [];
     counter = 0;
