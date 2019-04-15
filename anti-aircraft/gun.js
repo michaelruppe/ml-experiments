@@ -22,7 +22,7 @@ class Gun {
     if (col) {
       this.color = col;
     } else {
-      this.color = color(255,255,255);
+      this.color = color(127);
     }
 
     this.cooldown = 0;      // cooldown timer. 0 = ready to shoot
