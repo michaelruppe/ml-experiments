@@ -188,7 +188,7 @@ function toggleTrainingMode() {
     gun.projs = []; // clear projectiles on screen
     planes = [];
     counter = 0;
-    gun = new Gun(bestGun, true);
+    gun = new Gun(bestGun, color(0, 255, 0) );
   } else {
   // CONTINUE TRAINING - reset environment and failure criteria
     mode = 'train'
@@ -203,7 +203,7 @@ function toggleTrainingMode() {
 
 function toggleDemoMode() {
   // Demo the best gun trained so far
-  if (mode === 'train'){
+  if (mode !== 'showPretrained'){
     mode = 'showPretrained'
     demoButton.html('Showing pretrained');
     modeButton.hide();
@@ -211,7 +211,7 @@ function toggleDemoMode() {
     gun.projs = []; // clear projectiles on screen
     planes = [];
     counter = 0;
-    gun = new Gun(pretrained, true);
+    gun = new Gun(pretrained, color(173,255,47));
   } else {
   // CONTINUE TRAINING - reset environment and failure criteria
     mode = 'train'

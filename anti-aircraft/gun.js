@@ -1,5 +1,5 @@
 class Gun {
-  constructor(brain, superpower = false) {
+  constructor(brain, col) {
     this.baseW = 40;
     this.baseH = 30;
     this.gunL = 40;
@@ -18,7 +18,12 @@ class Gun {
     this.g;
 
     this.score = 0;
-    this.powerup = superpower;
+    this.color;
+    if (col) {
+      this.color = col;
+    } else {
+      this.color = color(255,255,255);
+    }
 
     this.cooldown = 0;      // cooldown timer. 0 = ready to shoot
     this.cooldownAmt = 80;   // number of frames to cooldown gun
@@ -38,11 +43,7 @@ class Gun {
   }
 
   show() {
-    if(this.powerup == true){
-      fill(0,255,0);
-    } else {
-      fill(255);
-    }
+    fill(this.color);
     rectMode(CENTER);
     rect(this.x, this.y, this.baseW, this.baseH);
     push(); translate(this.gunX, this.gunY); rotate(this.gunA);
