@@ -44,6 +44,7 @@ class Gun {
 
   show() {
     fill(this.color);
+    stroke(0); strokeWeight(1);
     rectMode(CENTER);
     rect(this.x, this.y, this.baseW, this.baseH);
     push(); translate(this.gunX, this.gunY); rotate(this.gunA);

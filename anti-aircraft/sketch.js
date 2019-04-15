@@ -25,6 +25,8 @@ let scoreText;
 let modeButton;
 let mode = 'train';
 let demoButton;
+let showTrails = false;
+
 
 function preload() {
   brainJSON = loadJSON('assets/pretrained.json')
@@ -48,14 +50,21 @@ function setup() {
   scoreText.parent('score-holder');
   speedSlider = createSlider(1,100000,1);
   speedSlider.position(30, height+40)
-  modeButton.position(speedSlider.x + speedSlider.width + 30, height+25);
+  modeButton.position(speedSlider.x + speedSlider.width + 30, height-10);
   modeButton.mousePressed(toggleTrainingMode);
-  demoButton.position(modeButton.x + modeButton.width + 30, modeButton.y);
+  demoButton.position(modeButton.x, modeButton.y + 35);
   demoButton.mousePressed(toggleDemoMode);
+  let tracerBox = createCheckbox('Show trails', false);
+  // tracerBox.position(speedSlider.position.x, speedSlider.position.y - 50);
+  tracerBox.position(modeButton.x + modeButton.width + 50, demoButton.y + demoButton.height/2);
 
-  for(let i = 0; i < POPULATION; i++) guns.push(new Gun());
-  gun = guns[gunIndex]; // select the first gun in the population
-  bestGun = gun.brain; // need to instantiate with something cant use the first
+  tracerBox.changed(toggleTrails);
+
+  for(let i = 0; i < POPULATION; i++) {
+    guns.push(new Gun());
+  }
+    gun = guns[gunIndex]; // select the first gun in the population
+    bestGun = gun.brain; // need to instantiate with something cant use the first
 }
 
 function draw() {
@@ -215,7 +224,7 @@ function toggleDemoMode() {
   } else {
   // CONTINUE TRAINING - reset environment and failure criteria
     mode = 'train'
-    demoButton.html('Normal Mode');
+    demoButton.html('Training mode');
     modeButton.show();
     modeButton.html('Now training...')
     gun.projs = []; // clear projectiles on screen
@@ -223,5 +232,13 @@ function toggleDemoMode() {
     counter = 0;
     gun = guns[gunIndex];
     passedPlanes = 0;
+  }
+}
+
+function toggleTrails() {
+  if (this.checked()) {
+    showTrails = true;
+  } else {
+    showTrails = false;
   }
 }

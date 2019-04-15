@@ -15,7 +15,7 @@ class Plane{
   }
 
   show(){
-    stroke(0); fill(255);
+    stroke(0); strokeWeight(1); fill(255);
     rectMode(CENTER);
     rect(this.x,this.y,this.l,this.w);
   }
