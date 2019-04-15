@@ -55,7 +55,7 @@ function setup() {
 
   for(let i = 0; i < POPULATION; i++) guns.push(new Gun());
   gun = guns[gunIndex]; // select the first gun in the population
-  bestGun = gun; // need to instantiate with something cant use the first
+  bestGun = gun.brain; // need to instantiate with something cant use the first
 }
 
 function draw() {
