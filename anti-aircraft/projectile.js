@@ -1,11 +1,17 @@
 class Projectile {
-  constructor(x, angle) {
+  constructor(x, angle, showPath = true) {
     this.x = x.copy();
     this.angle = angle;
     let speed = 10;
+    this.showPath = showPath;
     this.v = createVector(speed*cos(this.angle), speed*sin(this.angle));
     this.a = createVector(0, 7e-2);
     this.minDistance = Infinity; // minimum distance-to-target
+    this.path = [];
+
+    if(showPath) {
+      this.tracer = new Projectile(this.x.copy(), this.angle, false); // beware recursion!;
+    }
   }
 
   update() {
@@ -14,7 +20,26 @@ class Projectile {
   }
 
   show() {
-    ellipse(this.x.x,this.x.y,10,10)
+      // show the real projectile
+      ellipse(this.x.x,this.x.y,10,10)
+
+    if(this.showPath) {
+      // create a 'virtual' projectile. This will not interact with planes
+      if(this.path.length == 0) {
+      // simulate the projectile forward in time and store path
+        while(!this.tracer.offscreen()){
+          this.tracer.update();
+          this.path.push(this.tracer.x.copy());
+        }
+      }
+      stroke(0,100); strokeWeight(3);
+
+      for(let p of this.path) {
+        point(p.x,p.y)
+
+      }
+      // endShape();
+    }
   }
 
   // going above top of screen is allowed
