@@ -75,6 +75,7 @@ function setup() {
   modeSelect.option('train');
   modeSelect.option('best so far');
   modeSelect.option('pretrained model');
+  modeSelect.option('manual');
   modeSelect.changed(changeMode);
 
   let tracerBox = createCheckbox('Show trails', false);
@@ -176,8 +177,8 @@ function draw() {
 
     }
 
-    // Speed things along when no planes on-screen
-    if(planes.length == 0) {
+    // Speed things along when no planes on-screen (only in auto modes)
+    if(planes.length == 0 && mode !== 'manual') {
       counter = 0; // Force new plane to appear on next frame
       gun.resetCooldown();
       gun.projs = [];
@@ -232,6 +233,8 @@ function changeMode() {
     gun = guns[gunIndex];
   } else if ( mode === 'pretrained model') {
     gun = new Gun(pretrained, color(173,255,47));
+  } else if ( mode === 'manual') {
+    gun = new Gun('manual', color(255,100,0));
   }
   speedSelect.value('1x'); changeSpeed(); // TODO: fix. It's not enough to just set the value, need to call the event function here too;
   gun.projs = [];   // clear projectiles on screen

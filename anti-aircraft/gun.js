@@ -33,11 +33,16 @@ class Gun {
      *   HIDDEN [ User choice ]
      *  OUTPUTS [gunAngle, fireControl]
      */
-     if (brain) {
+
+     // You can pass a NeuralNetwork object or a string to brain.
+     if (brain instanceof NeuralNetwork) {
        this.brain = brain.copy();
+     } else if (brain === 'manual'){
+       this.brain = brain;
      } else {
        this.brain = new NeuralNetwork(4, 8, 2); // Every gun needs a brain
        // this.brain.setActivationFunction(this.brain.tanh)
+
      }
 
   }
@@ -55,45 +60,48 @@ class Gun {
 
   // Control the gun! Make a prediction with the current inputs
   think(planes) {
+    if (this.brain instanceof NeuralNetwork) {
+      // Find the closest plane.
+      let closest = null;
+      let closestDistance = Infinity;
+      for (let i = 0; i < planes.length; i++) {
+        let d = this.x - planes[i].x
 
-    // Find the closest plane.
-    let closest = null;
-    let closestDistance = Infinity;
-    for (let i = 0; i < planes.length; i++) {
-      let d = this.x - planes[i].x
-
-      if (d < closestDistance && d > 0) {
-        closestDistance = d;
-        closest = planes[i];
+        if (d < closestDistance && d > 0) {
+          closestDistance = d;
+          closest = planes[i];
+        }
       }
-    }
-    // only run prediction if a closest plane was actually found
-    if (closest) {
-      // normalise inputs and make a prediction
-      let inputs = [
-        closest.x / width,
-        closest.y / height,
-        closest.v / 10, // TODO check
-        this.cooldown,
-      ];
-      let output = this.brain.predict(inputs);
+      // only run prediction if a closest plane was actually found
+      if (closest) {
+        // normalise inputs and make a prediction
+        let inputs = [
+          closest.x / width,
+          closest.y / height,
+          closest.v / 10, // TODO check
+          this.cooldown,
+        ];
+        let output = this.brain.predict(inputs);
 
-      // set gun angle
-      this.gunA = map(output[0],0,1,-3*PI/2,-PI/2);
-      // Fire gun if cooled-down
-      if (output[1] > 0.5 && this.cooldown === 0) this.shoot();
+        // set gun angle
+        this.gunA = map(output[0],0,1,-3*PI/2,-PI/2);
+        // Fire gun if cooled-down
+        if (output[1] > 0.5 && this.cooldown === 0) this.shoot();
+
+      }
+
+    } else if (this.brain === 'manual') {
+        // Find gun-angle from mouse position
+        let r = ((mouseX-this.gunX)*(mouseX-this.gunX)) + ((mouseY-this.gunY)*(mouseY-this.gunY));
+        r = Math.sqrt(r);
+        let o = mouseY - this.gunY;
+        let a = mouseX - this.gunX;
+        this.gunA = atan2(o,a) - PI/2
 
     }
   }
 
   update() {
-    // Find gun-angle from mouse position
-    // let r = ((mouseX-this.gunX)*(mouseX-this.gunX)) + ((mouseY-this.gunY)*(mouseY-this.gunY));
-    // r = Math.sqrt(r);
-    // let o = mouseY - this.gunY;
-    // let a = mouseX - this.gunX;
-    // this.gunA = atan2(o,a) - PI/2
-
     this.cooldown -= 1/this.cooldownAmt;
     if(this.cooldown < 0) this.cooldown = 0;
 
@@ -124,4 +132,8 @@ class Gun {
   resetCooldown() {
     this.cooldown = 0;
   }
+}
+
+function mousePressed() {
+  if (gun.brain === 'manual') gun.shoot();
 }
