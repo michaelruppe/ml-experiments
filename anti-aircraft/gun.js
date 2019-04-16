@@ -51,11 +51,15 @@ class Gun {
     fill(this.color);
     stroke(0); strokeWeight(1);
     rectMode(CENTER);
-    rect(this.x, this.y, this.baseW, this.baseH);
-    push(); translate(this.gunX, this.gunY); rotate(this.gunA);
-    rect(0,0,this.gunW,this.gunL);
-    ellipse(0,this.gunL/2,10,10)
+    imageMode(CENTER);
+    // rect(this.x, this.y, this.baseW, this.baseH);
+    push(); translate(this.gunX, this.gunY); rotate(this.gunA + PI);
+    // rect(0,0,this.gunW,this.gunL);
+    // ellipse(0,this.gunL/2,10,10);
+    image(spriteGun, 0, -0.4*this.gunL)
     pop();
+    image(spriteGunBody,this.x,this.y)
+
   }
 
   // Control the gun! Make a prediction with the current inputs

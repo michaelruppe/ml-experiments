@@ -15,9 +15,13 @@ class Plane{
   }
 
   show(){
-    stroke(0); strokeWeight(1); fill(255);
-    rectMode(CENTER);
-    rect(this.x,this.y,this.l,this.w);
+    imageMode(CENTER);
+    image(spriteUFO, this.x, this.y)
+
+    // The old animation
+    // stroke(0); strokeWeight(1); fill(255);
+    // rectMode(CENTER);
+    // rect(this.x,this.y,this.l,this.w);
   }
 
   offscreen(){

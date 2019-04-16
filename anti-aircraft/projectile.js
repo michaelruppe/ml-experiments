@@ -21,7 +21,7 @@ class Projectile {
 
   show() {
       // show the real projectile
-      stroke(0); strokeWeight(1);
+      fill(0); noStroke();
       ellipse(this.x.x,this.x.y,10,10)
 
     if(this.parent && showTrails) {

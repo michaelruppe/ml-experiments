@@ -30,10 +30,20 @@ let speedSelect;
 let genText;
 let scoreText;
 
+let spriteUFO;
+let spriteGunBody;
+let spriteGun;
+let spriteBg;
+
 
 
 function preload() {
   brainJSON = loadJSON('assets/pretrained.json')
+
+  spriteUFO = loadImage('assets/ufo.png')
+  spriteGunBody = loadImage('assets/gunbody.png')
+  spriteGun = loadImage('assets/gun.png')
+  spriteBg = loadImage('assets/background.png')
 }
 
 function setup() {
@@ -86,6 +96,9 @@ function setup() {
 }
 
 function draw() {
+  imageMode(CORNER)
+  // translate(width/2, height/2);
+  background(spriteBg)
 
   for (let loops = 0; loops < speed; loops++){
 
@@ -187,7 +200,6 @@ function draw() {
   }
 
 
-  background(135,206,235);
   noStroke(); fill(0);
   textAlign(CENTER); textSize(16); textFont('Georgia');
   text('Speed', speedSelect.x + speedSelect.width/3, speedSelect.y-80);
@@ -195,13 +207,13 @@ function draw() {
   genText.html('Generation: ' + genCounter);
   scoreText.html('Current score: ' + nfc(score,0) + '<br> Best score: ' + nfc(bestScore, 0) );
 
-  gun.show();
   for(let p of gun.projs) {
     p.show();
   }
   for(let plane of planes){
     plane.show();
   }
+  gun.show();
 
 
 
