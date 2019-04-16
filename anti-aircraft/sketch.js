@@ -38,7 +38,8 @@ let spriteBg;
 
 
 function preload() {
-  brainJSON = loadJSON('assets/pretrained.json')
+  // brainJSON = loadJSON('assets/pretrained.json') // First pretrained model. Saved around score 3 Million
+  brainJSON = loadJSON('assets/pretrained2.json')   // Second pretrained model. Saved around score 15.5 Billion
 
   spriteUFO = loadImage('assets/ufo.png')
   spriteGunBody = loadImage('assets/gunbody.png')
@@ -50,8 +51,8 @@ function setup() {
   let canvas = createCanvas(800,500);
   canvas.parent('sketch-holder');
 
-  // brainJSON only contains weights and biases. This function creates a real
-  // NeuralNetwork object
+  // brainJSON only contains weights and biases. This function loads them into
+  // a NeuralNetwork object
   pretrained = NeuralNetwork.deserialize(brainJSON);
 
   for(let i = 0; i < POPULATION; i++) {
@@ -97,7 +98,6 @@ function setup() {
 
 function draw() {
   imageMode(CORNER)
-  // translate(width/2, height/2);
   background(spriteBg)
 
   for (let loops = 0; loops < speed; loops++){
