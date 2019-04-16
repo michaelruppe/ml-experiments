@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anti-aircraft AI</title>
+    <title>UFO Defender</title>
     <style> body {padding: 0; margin: 0;} </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
@@ -23,7 +23,7 @@
   <style>
   	body {
       margin: 20px;
-  		background-color: #B19CD;
+  		background-color: #FFDAB9;
   	}
   	button {
   		font-size: 12pt;
@@ -34,7 +34,7 @@
 
 
   <body>
-    <h2>Anti-aircraft</h2>
+    <h2>UFO Defender - Neuro-evoltion</h2>
     <div id="sketch-holder">
          <!-- sketch will go here! -->
     </div>
@@ -42,10 +42,16 @@
     <div id="score-holder"></div>
 
     <h2>What's going on here?</h2>
-    <p>A population of AA-guns are trialled at random. If they let a plane
-      through, they fail. Setting the time warp to the far left will demonstrate
-      only the best performing gun. Any other setting will set training-speed for
-      the population
+    <p>A population of guns is trialled one-by-one. Each gun is controlled by a (randomly initialised) neural network.
+      If a gun lets some UFOs through, it fails and the next one takes its place. Once all the guns have been trialled,
+      a new generation is created. Guns that score highest are more likely to pass their neural network on to the next generation.
+      Small mutations occur between generations.
+      Performance is measured by how many UFOs are destroyed and how quickly. Near misses are also rewarded to encourage faster
+      training during early generations.
     </p>
+    <p>train mode: perform neuro-evolution on the guns</p>
+    <p>best so far: display the best-performing gun from the current population</p>
+    <p>pretrained model: deplay a very well-performing neural network that has already been trained.</p>
+    <p>manual: take control of the gun yourself!</p>
   </body>
 </html>
