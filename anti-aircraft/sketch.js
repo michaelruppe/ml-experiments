@@ -13,19 +13,23 @@ let planes = [];
 let brainJSON;     // the pretrained NeuralNetwork
 let pretrained;
 
-let passedPlanes = 0; // keep track of how many planes pass the gun
+// Game mechanics
+let passedPlanes = 0; // a failure condition
 let counter = 0;
 let score = 0;
 let bestScore = 0;
-let bestGun;
 let genCounter = 1;
-let speedSlider;
+let bestGun;
+
+// User settings & DOM elements
+let mode = 'train';
+let showTrails = false;
+let speed = 1;
+let modeSelect;
+let speedSelect;
 let genText;
 let scoreText;
-let modeButton;
-let mode = 'train';
-let demoButton;
-let showTrails = false;
+
 
 
 function preload() {
@@ -40,36 +44,49 @@ function setup() {
   // NeuralNetwork object
   pretrained = NeuralNetwork.deserialize(brainJSON);
 
-  modeButton = createButton('Now training...');
-  demoButton = createButton('Normal Mode');
+  for(let i = 0; i < POPULATION; i++) {
+    guns.push(new Gun());
+  }
+  gun = guns[gunIndex]; // select the first gun in the population
+  bestGun = gun.brain; // need to instantiate with something cant use the first
 
-  textFont('Helvetica'); textSize(12)
+
+  //
+  // DOM elements and display styles
+  //
+  cursor(CROSS);
+
   genText = createP(' ');
   genText.parent('gen-holder');
   scoreText = createP(' ');
   scoreText.parent('score-holder');
-  speedSlider = createSlider(1,100000,1);
-  speedSlider.position(30, height+40)
-  modeButton.position(speedSlider.x + speedSlider.width + 30, height-10);
-  modeButton.mousePressed(toggleTrainingMode);
-  demoButton.position(modeButton.x, modeButton.y + 35);
-  demoButton.mousePressed(toggleDemoMode);
-  let tracerBox = createCheckbox('Show trails', false);
-  // tracerBox.position(speedSlider.position.x, speedSlider.position.y - 50);
-  tracerBox.position(modeButton.x + modeButton.width + 50, demoButton.y + demoButton.height/2);
 
+
+  speedSelect = createSelect();
+  speedSelect.position(30, height + 30);
+  speedSelect.option('1x');
+  speedSelect.option('2x');
+  speedSelect.option('3x');
+  speedSelect.option('10,000x');
+  speedSelect.changed(changeSpeed);
+
+  modeSelect = createSelect();
+  modeSelect.position(speedSelect.x + 130, speedSelect.y);
+  modeSelect.option('train');
+  modeSelect.option('best so far');
+  modeSelect.option('pretrained model');
+  modeSelect.changed(changeMode);
+
+  let tracerBox = createCheckbox('Show trails', false);
+  tracerBox.position(modeSelect.x + 180, modeSelect.y + modeSelect.height/5);
   tracerBox.changed(toggleTrails);
 
-  for(let i = 0; i < POPULATION; i++) {
-    guns.push(new Gun());
-  }
-    gun = guns[gunIndex]; // select the first gun in the population
-    bestGun = gun.brain; // need to instantiate with something cant use the first
+
 }
 
 function draw() {
 
-  for (let loops = 0; loops < speedSlider.value(); loops++){
+  for (let loops = 0; loops < speed; loops++){
 
     // Periodically generate planes
     if(counter++ % 300 == 0) {
@@ -131,6 +148,7 @@ function draw() {
     }
 
     score = gun.score;
+
     if (mode === 'train'){
 
       // Update score, save best guns brain
@@ -169,9 +187,10 @@ function draw() {
 
 
   background(135,206,235);
-  stroke(0); fill(0);
-  textAlign(CENTER); textSize(20)
-  text('TimeWarp', speedSlider.x + speedSlider.width/3, height-30);
+  noStroke(); fill(0);
+  textAlign(CENTER); textSize(16); textFont('Georgia');
+  text('Speed', speedSelect.x + speedSelect.width/3, speedSelect.y-80);
+  text('Mode', modeSelect.x + modeSelect.width/3, modeSelect.y-80);
   genText.html('Generation: ' + genCounter);
   scoreText.html('Current score: ' + nfc(score,0) + '<br> Best score: ' + nfc(bestScore, 0) );
 
@@ -188,51 +207,13 @@ function draw() {
 }
 
 
-function toggleTrainingMode() {
-  // Demo the best gun trained so far
-  if (mode === 'train'){
-    mode = 'showBest'
-    modeButton.html('Showing best')
-    speedSlider.value(1);
-    gun.projs = []; // clear projectiles on screen
-    planes = [];
-    counter = 0;
-    gun = new Gun(bestGun, color(0, 255, 0) );
-  } else {
-  // CONTINUE TRAINING - reset environment and failure criteria
-    mode = 'train'
-    modeButton.html('Now training...')
-    gun.projs = []; // clear projectiles on screen
-    planes = [];
-    counter = 0;
-    gun = guns[gunIndex];
-    passedPlanes = 0;
-  }
-}
 
-function toggleDemoMode() {
-  // Demo the best gun trained so far
-  if (mode !== 'showPretrained'){
-    mode = 'showPretrained'
-    demoButton.html('Showing pretrained');
-    modeButton.hide();
-    speedSlider.value(1);
-    gun.projs = []; // clear projectiles on screen
-    planes = [];
-    counter = 0;
-    gun = new Gun(pretrained, color(173,255,47));
-  } else {
-  // CONTINUE TRAINING - reset environment and failure criteria
-    mode = 'train'
-    demoButton.html('Training mode');
-    modeButton.show();
-    modeButton.html('Now training...')
-    gun.projs = []; // clear projectiles on screen
-    planes = [];
-    counter = 0;
-    gun = guns[gunIndex];
-    passedPlanes = 0;
-  }
+function changeSpeed() {
+  let set = speedSelect.value();
+  if (set == '1x') {speed = 1;} else
+  if (set == '2x') {speed = 2;} else
+  if (set == '3x') {speed = 3;} else
+  if (set == '10,000x') {speed = 100000;}
 }
 
 function toggleTrails() {
@@ -241,4 +222,20 @@ function toggleTrails() {
   } else {
     showTrails = false;
   }
+}
+
+function changeMode() {
+  mode = modeSelect.value(); // update global mode variable
+  if (mode === 'best so far'){
+    gun = new Gun(bestGun, color(0, 255, 0) );
+  } else if ( mode === 'train') {
+    gun = guns[gunIndex];
+  } else if ( mode === 'pretrained model') {
+    gun = new Gun(pretrained, color(173,255,47));
+  }
+  speedSelect.value('1x'); changeSpeed(); // TODO: fix. It's not enough to just set the value, need to call the event function here too;
+  gun.projs = [];   // clear projectiles on screen
+  planes = [];      // clear planes on screen
+  counter = 0;      // generate plane on next frame
+  passedPlanes = 0; // reset failure condition
 }
