@@ -44,14 +44,17 @@
     <h2>What's going on here?</h2>
     <p>A population of guns is trialled one-by-one. Each gun is controlled by a (randomly initialised) neural network.
       If a gun lets some UFOs through, it fails and the next one takes its place. Once all the guns have been trialled,
-      a new generation is created. Guns that score highest are more likely to pass their neural network on to the next generation.
+      a new generation is created. Higher scoring guns are more likely to pass their neural network on to the next generation.
       Small mutations occur between generations.
       Performance is measured by how many UFOs are destroyed and how quickly. Near misses are also rewarded to encourage faster
       training during early generations.
     </p>
-    <p>train mode: perform neuro-evolution on the guns</p>
-    <p>best so far: display the best-performing gun that has been trained yet.</p>
-    <p>pretrained model: deploy a very well-performing neural network that has already been trained.</p>
-    <p>manual: take control of the gun yourself!</p>
+    <ul>
+      <item>train mode: perform neuro-evolution on the guns
+      <item>best so far: display the best-performing gun that has been trained yet.
+      <item>pretrained model: deploy a very well-performing neural network that has already been trained.
+      <item>manual: take control of the gun yourself!
+    </ul>
+
   </body>
 </html>
