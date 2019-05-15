@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuroevolution with TensorFlow</title>
+    <style> body {padding: 0; margin: 0;} </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/addons/p5.dom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.1.0/dist/tf.min.js"></script>
+
+    <script src="sketch.js"></script>
+    <script src="bird.js"></script>
+    <script src="pipe.js"></script>
+    <script src="ga.js"></script>
+    <script src="nn.js"></script>
+
+  </head>
+  <style>
+  	body {
+      margin: 20px;
+  		background-color: #FFDAB9;
+  	}
+  	button {
+  		font-size: 12pt;
+  		margin: 10px;
+  	}
+  	</style>
+
+
+
+  <body>
+    <h2>Fearless Flappers - Neuroevolution of a flappy bird - now with TensorFlow!</h2>
+    <div id="sketch-holder">
+         <!-- sketch will go here! -->
+    </div>
+    <p>Time-Warp: <div id="slider-holder"></div></p>
+    <div id="gen-holder"></div>
+    <div id="score-holder"></div>
+
+    <h2>What's going on here?</h2>
+    <p>A population of birds tries to navigate the course. The more successful birds
+    are more likely to reproduce. Small mutations affect the behaviour of offspring. <br>
+    Each bird is controlled by a neural-network which has some information about the virtual world -
+    like the bird's position and distance-to-wall, for example. The neural-net can only control the bird's flapping.
+    Importantly, the neural-nets have no idea about the physical meaning of the inputs - it has no concept of distance
+    or speed.
+    </p>
+    <p><b>A diagram of inputs and outputs for the neural network</b></p>
+    <img src="art/flappy-diagram.jpg" alt="Schematic of inputs to the neural network" width="800">
+  </body>
+</html>
