@@ -74,7 +74,7 @@ function setup() {
 
 
   speedSelect = createSelect();
-  speedSelect.position(30, height + 30);
+  speedSelect.position(30, height + 60);
   speedSelect.option('1x');
   speedSelect.option('2x');
   speedSelect.option('3x');
@@ -202,8 +202,8 @@ function draw() {
 
   noStroke(); fill(0);
   textAlign(CENTER); textSize(16); textFont('Georgia');
-  text('Speed', speedSelect.x + speedSelect.width/3, speedSelect.y-80);
-  text('Mode', modeSelect.x + modeSelect.width/3, modeSelect.y-80);
+  text('Speed', speedSelect.x + speedSelect.width/3, speedSelect.y-120);
+  text('Mode', modeSelect.x + modeSelect.width/3, speedSelect.y-120);
   genText.html('Generation: ' + genCounter);
   scoreText.html('Current score: ' + nfc(score,0) + '<br> Best score: ' + nfc(bestScore, 0) );
 
