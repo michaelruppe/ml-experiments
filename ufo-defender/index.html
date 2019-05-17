@@ -35,26 +35,63 @@
 
   <body>
     <h2>UFO Defender - Neuroevoltion</h2>
+    </header><div>If you just want the source code, get it <a href="https://github.com/michaelruppe/ml-experiments/tree/master/ufo-defender">here</a></div><br>
     <div id="sketch-holder">
          <!-- sketch will go here! -->
     </div>
     <div id="gen-holder"></div>
     <div id="score-holder"></div>
 
-    <h2>What's going on here?</h2>
-    <p>A population of guns is trialled one-by-one. Each gun is controlled by a (randomly initialised) neural network.
-      If a gun lets some UFOs through, it fails and the next one takes its place. Once all the guns have been trialled,
-      a new generation is created. Higher scoring guns are more likely to pass their neural network on to the next generation.
-      Small mutations occur between generations.
-      Performance is measured by how many UFOs are destroyed and how quickly. Near misses are also rewarded to encourage faster
-      training during early generations.
-    </p>
+    <br>
+    <div class="post-content">
+    <p>This is my first completely unguided machine learning project - defending Earth with neuroevolution.</p>
+
+    <p>Here, a neural network learns to solve a fire-control problem: How to hit a moving target with projectile motion.
+    Like many beginner ML problems, of course this could be solved analytically. I think it makes for a neat project though.</p>
+
+    <p>First, the game environment was created. This is:</p>
+
     <ul>
-      <item>train mode: perform neuro-evolution on the guns
-      <item>best so far: display the best-performing gun that has been trained yet.
-      <item>pretrained model: deploy a very well-performing neural network that has already been trained.
-      <item>manual: take control of the gun yourself!
+    <li>The physics that affect projectiles</li>
+    <li>Building the gun and how it fires projectiles with a fixed speed at some angle.</li>
+    <li>Logic to determine if a projectie hits a target.</li>
     </ul>
+
+    <p>Projectiles follow frictionless projectile motion:</p>
+
+    <p><img src="projectile-motion-equations.gif" alt="Discrete-time equations for projectile motion" /></p>
+
+    <p>Next, the neural network is given control of the gun, and fed information from the game enviroment.
+    The neural network is dense (fully-connected) and has:</p>
+    <ul>
+    <li>4 Inputs: Target X-position, Target Y-Position, Target Speed, and a reload countdown.</li>
+    <li>A single hidden layer with 8 neurons.</li>
+    <li>2 Outputs: Gun-angle, and Fire.</li>
+    </ul>
+
+    <p>A population of guns is trialled one-by-one. Each gun is controlled by a (randomly initialised) neural network.
+    Performance is measured by how many UFOs are destroyed and how quickly. Near misses are also rewarded to encourage faster
+    training during early generations.</p>
+
+    <p>If a gun lets some UFOs through, it’s killed-off and the next one takes its place. Once all the guns have been trialled,
+    a new generation is created. Better-performing guns are more likely to pass their genetics (NN) on to the next generation.
+    Small mutations may occur between generations.</p>
+
+    <p>There are a few options for the user:</p>
+    <ul>
+    <li><strong>train mode</strong>: perform neuro-evolution on the guns</li>
+    <li><strong>best so far</strong>: display the best-performing gun that has been trained yet.</li>
+    <li><strong>pretrained model</strong>: deploy a pretrained, well-performing neural network.</li>
+    <li><strong>manual</strong>: take control of the gun yourself!</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+
+    <ul>
+    <li><a href="https://github.com/CodingTrain/Toy-Neural-Network-JS">Toy Neural Network</a> - The Coding Train</li>
+    </ul>
+
+    </div>
 
   </body>
 </html>
