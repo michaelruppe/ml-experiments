@@ -22,7 +22,7 @@ let genCounter = 1;
 let bestGun;
 
 // User settings & DOM elements
-let mode = 'train';
+let mode = 'pretrained model';
 let showTrails = false;
 let speed = 1;
 let modeSelect;
@@ -83,11 +83,12 @@ function setup() {
 
   modeSelect = createSelect();
   modeSelect.position(speedSelect.x + 130, speedSelect.y);
+  modeSelect.option('pretrained model');
   modeSelect.option('train');
   modeSelect.option('best so far');
-  modeSelect.option('pretrained model');
   modeSelect.option('manual');
   modeSelect.changed(changeMode);
+  changeMode(); // Make sure the mode is updated to the initialised value
 
   let tracerBox = createCheckbox('Show trails', false);
   tracerBox.position(modeSelect.x + 180, modeSelect.y + modeSelect.height/5);
